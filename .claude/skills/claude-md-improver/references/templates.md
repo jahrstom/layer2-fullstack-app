@@ -49,8 +49,8 @@ List important files that Claude should know about.
 ```markdown
 ## Key Files
 
-- `<path>` - <purpose>
-- `<path>` - <purpose>
+- `<path>` - `<purpose>`
+- `<path>` - `<purpose>`
 ```
 
 ### Code Style
@@ -60,9 +60,9 @@ Document project-specific coding conventions.
 ```markdown
 ## Code Style
 
-- <convention>
-- <convention>
-- <preference over alternative>
+- `<convention>`
+- `<convention>`
+- `<preference over alternative>`
 ```
 
 ### Environment
@@ -73,11 +73,11 @@ Document required environment variables and setup.
 ## Environment
 
 Required:
-- `<VAR_NAME>` - <purpose>
-- `<VAR_NAME>` - <purpose>
+- `<VAR_NAME>` - `<purpose>`
+- `<VAR_NAME>` - `<purpose>`
 
 Setup:
-- <setup step>
+- `<setup step>`
 ```
 
 ### Testing
@@ -87,8 +87,8 @@ Document testing approach and commands.
 ```markdown
 ## Testing
 
-- `<test command>` - <what it tests>
-- <testing convention or pattern>
+- `<test command>` - `<what it tests>`
+- `<testing convention or pattern>`
 ```
 
 ### Gotchas
@@ -98,9 +98,9 @@ Document non-obvious patterns, quirks, and warnings.
 ```markdown
 ## Gotchas
 
-- <non-obvious thing that causes issues>
-- <ordering dependency or prerequisite>
-- <common mistake to avoid>
+- `<non-obvious thing that causes issues>`
+- `<ordering dependency or prerequisite>`
+- `<common mistake to avoid>`
 ```
 
 ### Workflow
@@ -110,8 +110,8 @@ Document development workflow patterns.
 ```markdown
 ## Workflow
 
-- <when to do X>
-- <preferred approach for Y>
+- `<when to do X>`
+- `<preferred approach for Y>`
 ```
 
 ---
@@ -119,23 +119,23 @@ Document development workflow patterns.
 ## Template: Project Root (Minimal)
 
 ```markdown
-# <Project Name>
+# `<Project Name>`
 
-<One-line description>
+`<One-line description>`
 
 ## Commands
 
 | Command | Description |
 |---------|-------------|
-| `<command>` | <description> |
+| `<command>` | `<description>` |
 
 ## Architecture
 
-    <structure>
+    `<structure>`
 
 ## Gotchas
 
-- <gotcha>
+- `<gotcha>`
 ```
 
 ---
@@ -143,39 +143,39 @@ Document development workflow patterns.
 ## Template: Project Root (Comprehensive)
 
 ```markdown
-# <Project Name>
+# `<Project Name>`
 
-<One-line description>
+`<One-line description>`
 
 ## Commands
 
 | Command | Description |
 |---------|-------------|
-| `<command>` | <description> |
+| `<command>` | `<description>` |
 
 ## Architecture
 
-    <structure with descriptions>
+    `<structure with descriptions>`
 
 ## Key Files
 
-- `<path>` - <purpose>
+- `<path>` - `<purpose>`
 
 ## Code Style
 
-- <convention>
+- `<convention>`
 
 ## Environment
 
-- `<VAR>` - <purpose>
+- `<VAR>` - `<purpose>`
 
 ## Testing
 
-- `<command>` - <scope>
+- `<command>` - `<scope>`
 
 ## Gotchas
 
-- <gotcha>
+- `<gotcha>`
 ```
 
 ---
@@ -185,25 +185,25 @@ Document development workflow patterns.
 For packages within a monorepo or distinct modules.
 
 ```markdown
-# <Package Name>
+# `<Package Name>`
 
-<Purpose of this package>
+`<Purpose of this package>`
 
 ## Usage
 
-    <import/usage example>
+    `<import/usage example>`
 
 ## Key Exports
 
-- `<export>` - <purpose>
+- `<export>` - `<purpose>`
 
 ## Dependencies
 
-- `<dependency>` - <why needed>
+- `<dependency>` - `<why needed>`
 
 ## Notes
 
-- <important note>
+- `<important note>`
 ```
 
 ---
@@ -211,26 +211,26 @@ For packages within a monorepo or distinct modules.
 ## Template: Monorepo Root
 
 ```markdown
-# <Monorepo Name>
+# `<Monorepo Name>`
 
-<Description>
+`<Description>`
 
 ## Packages
 
 | Package | Description | Path |
 |---------|-------------|------|
-| `<name>` | <purpose> | `<path>` |
+| `<name>` | `<purpose>` | `<path>` |
 
 ## Commands
 
 | Command | Description |
 |---------|-------------|
-| `<command>` | <description> |
+| `<command>` | `<description>` |
 
 ## Cross-Package Patterns
 
-- <shared pattern>
-- <generation/sync pattern>
+- `<shared pattern>`
+- `<generation/sync pattern>`
 ```
 
 ---
