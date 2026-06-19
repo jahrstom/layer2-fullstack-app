@@ -36,12 +36,10 @@ Describe the project structure so Claude understands where things live.
 ```markdown
 ## Architecture
 
-```
-<root>/
-  <dir>/    # <purpose>
-  <dir>/    # <purpose>
-  <dir>/    # <purpose>
-```
+    <root>/
+      <dir>/    # <purpose>
+      <dir>/    # <purpose>
+      <dir>/    # <purpose>
 ```
 
 ### Key Files
@@ -133,9 +131,7 @@ Document development workflow patterns.
 
 ## Architecture
 
-```
-<structure>
-```
+    <structure>
 
 ## Gotchas
 
@@ -159,9 +155,7 @@ Document development workflow patterns.
 
 ## Architecture
 
-```
-<structure with descriptions>
-```
+    <structure with descriptions>
 
 ## Key Files
 
@@ -197,9 +191,7 @@ For packages within a monorepo or distinct modules.
 
 ## Usage
 
-```
-<import/usage example>
-```
+    <import/usage example>
 
 ## Key Exports
 
