@@ -14,6 +14,7 @@ import { OrdersService } from '../../../../orders/services/orders.service';
 import { SpinnerComponent } from '../../../../../clib/components/spinner/spinner.component';
 import { CartItemRowComponent } from '../../views/cart-item-row/cart-item-row.component';
 import { CartSummaryComponent } from '../../views/cart-summary/cart-summary.component';
+import { AddressFormComponent } from '../../views/address-form/address-form.component';
 import { AppNavRoutes } from '../../../../../core/config/constants/navigation.constants';
 import { NotificationsService } from '../../../../../core/services/notifications.service';
 import {
@@ -21,10 +22,13 @@ import {
     calculateCartSubtotal,
     toCreateOrderDto
 } from '../../../utils/cart.utils';
+import { createAddressForm } from '../../../utils/address-form.utils';
+
+import { CardComponent } from '../../../../../clib/components/card/card.component';
 
 @Component({
     selector: 'app-cart-overview-page',
-    imports: [SpinnerComponent, CartItemRowComponent, CartSummaryComponent, RouterLink],
+    imports: [SpinnerComponent, CartItemRowComponent, CartSummaryComponent, AddressFormComponent, CardComponent, RouterLink],
     templateUrl: './cart-overview-page.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -45,6 +49,8 @@ export class CartOverviewPageComponent implements OnInit {
         AppNavRoutes.Products.root,
         AppNavRoutes.Products.features.overview
     ];
+
+    readonly addressForm = createAddressForm();
 
     readonly productsById = computed(() => buildProductsById(this.products()));
 
@@ -73,7 +79,17 @@ export class CartOverviewPageComponent implements OnInit {
     onCheckout(): void {
         if (this.cartItems().length === 0) return;
 
-        const payload = toCreateOrderDto(this.cartItems());
+        this.addressForm.markAllAsTouched();
+        if (this.addressForm.invalid) {
+            this.notificationsService.notifyError({
+                title: 'Invalid address',
+                message: 'Please provide a complete delivery address.'
+            });
+            return;
+        }
+
+        const address = this.addressForm.getRawValue();
+        const payload = toCreateOrderDto(this.cartItems(), address);
         if (!payload) return;
 
         this.isSubmitting.set(true);
@@ -84,6 +100,7 @@ export class CartOverviewPageComponent implements OnInit {
                 next: () => {
                     this.isSubmitting.set(false);
                     this.cartService.clear();
+                    this.addressForm.reset();
                     this.notificationsService.notifySuccess({
                         title: 'Order placed',
                         message: 'Your order is being processed.'
