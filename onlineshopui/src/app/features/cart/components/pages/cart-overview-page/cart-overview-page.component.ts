@@ -14,6 +14,7 @@ import { OrdersService } from '../../../../orders/services/orders.service';
 import { SpinnerComponent } from '../../../../../clib/components/spinner/spinner.component';
 import { CartItemRowComponent } from '../../views/cart-item-row/cart-item-row.component';
 import { CartSummaryComponent } from '../../views/cart-summary/cart-summary.component';
+import { AddressFormComponent } from '../../views/address-form/address-form.component';
 import { AppNavRoutes } from '../../../../../core/config/constants/navigation.constants';
 import { NotificationsService } from '../../../../../core/services/notifications.service';
 import {
@@ -21,10 +22,11 @@ import {
     calculateCartSubtotal,
     toCreateOrderDto
 } from '../../../utils/cart.utils';
+import { createAddressForm } from '../../../utils/address-form.utils';
 
 @Component({
     selector: 'app-cart-overview-page',
-    imports: [SpinnerComponent, CartItemRowComponent, CartSummaryComponent, RouterLink],
+    imports: [SpinnerComponent, CartItemRowComponent, CartSummaryComponent, AddressFormComponent, RouterLink],
     templateUrl: './cart-overview-page.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -45,6 +47,9 @@ export class CartOverviewPageComponent implements OnInit {
         AppNavRoutes.Products.root,
         AppNavRoutes.Products.features.overview
     ];
+
+    readonly addressForm = createAddressForm();
+    readonly isAddressModalOpen = signal(false);
 
     readonly productsById = computed(() => buildProductsById(this.products()));
 
@@ -72,8 +77,17 @@ export class CartOverviewPageComponent implements OnInit {
 
     onCheckout(): void {
         if (this.cartItems().length === 0) return;
+        this.isAddressModalOpen.set(true);
+    }
 
-        const payload = toCreateOrderDto(this.cartItems());
+    onConfirmOrder(): void {
+        this.addressForm.markAllAsTouched();
+        if (this.addressForm.invalid) {
+            return;
+        }
+
+        const address = this.addressForm.getRawValue();
+        const payload = toCreateOrderDto(this.cartItems(), address);
         if (!payload) return;
 
         this.isSubmitting.set(true);
@@ -83,7 +97,9 @@ export class CartOverviewPageComponent implements OnInit {
             .subscribe({
                 next: () => {
                     this.isSubmitting.set(false);
+                    this.isAddressModalOpen.set(false);
                     this.cartService.clear();
+                    this.addressForm.reset();
                     this.notificationsService.notifySuccess({
                         title: 'Order placed',
                         message: 'Your order is being processed.'
@@ -103,6 +119,11 @@ export class CartOverviewPageComponent implements OnInit {
                     this.isSubmitting.set(false);
                 }
             });
+    }
+
+    onCancelOrder(): void {
+        this.isAddressModalOpen.set(false);
+        this.addressForm.reset();
     }
 
     retry(): void {

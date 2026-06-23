@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import msg.onlineshopapi.dto.OrderDetailResponseDto;
 import msg.onlineshopapi.dto.OrderRequestDto;
 import msg.onlineshopapi.dto.OrderResponseDto;
+import msg.onlineshopapi.model.Address;
 import msg.onlineshopapi.model.Order;
 import msg.onlineshopapi.model.OrderDetail;
 import msg.onlineshopapi.model.Product;
@@ -42,8 +43,14 @@ public class OrderMapper {
                         .build())
                 .collect(Collectors.toSet());
 
+        Address address = null;
+        if (dto.getAddress() != null) {
+            address = addressMapper.toEntity(dto.getAddress());
+        }
+
         return Order.builder()
                 .orderDetails(details)
+                .address(address)
                 .build();
     }
 }

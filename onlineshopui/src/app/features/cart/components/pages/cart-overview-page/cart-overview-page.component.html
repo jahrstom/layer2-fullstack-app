@@ -1,3 +1,4 @@
+<!--suppress HtmlUnknownTag, HtmlUnknownAttribute -->
 <div class="min-h-screen bg-surface py-8">
     <div class="container mx-auto px-4 max-w-6xl">
         <div class="flex flex-wrap items-end justify-between gap-4 mb-10">
@@ -59,6 +60,57 @@
                         (checkout)="onCheckout()"
                         (clear)="onClearCart()"
                     />
+                </div>
+            </div>
+        }
+
+        <!-- Address Modal -->
+        @if (isAddressModalOpen()) {
+            <div
+                role="button"
+                tabindex="0"
+                class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 dark:bg-black/70 p-4"
+                (click)="$event.target === $event.currentTarget && onCancelOrder()"
+            >
+                <div class="bg-surface rounded-xl shadow-card max-w-lg w-full border border-border max-h-[90vh] overflow-y-auto">
+                    <div class="flex items-center justify-between p-4 border-b border-border">
+                        <h3 class="text-xl font-semibold text-text">
+                            Delivery Address
+                        </h3>
+                        <button
+                            type="button"
+                            (click)="onCancelOrder()"
+                            class="text-text-muted hover:text-text transition-colors"
+                        >
+                            ✕
+                        </button>
+                    </div>
+
+                    <div class="p-4 text-text">
+                        <app-address-form
+                            [form]="addressForm"
+                            [isSubmitting]="isSubmitting()"
+                        />
+                    </div>
+
+                    <div class="flex items-center justify-end gap-3 p-4 border-t border-border">
+                        <button
+                            type="button"
+                            (click)="onCancelOrder()"
+                            [disabled]="isSubmitting()"
+                            class="px-4 py-2 rounded-md border border-border hover:bg-surface-2 text-text font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            type="button"
+                            (click)="onConfirmOrder()"
+                            [disabled]="isSubmitting()"
+                            class="px-4 py-2 rounded-md bg-primary hover:bg-accent text-primary-foreground font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                            {{ isSubmitting() ? 'Placing Order...' : 'Place Order' }}
+                        </button>
+                    </div>
                 </div>
             </div>
         }

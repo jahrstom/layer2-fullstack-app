@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Commerce App - Interactive Onboarding</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .credentials {
+            background: #f8f9fa;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 10px;
+            border-left: 5px solid #667eea;
+        }
+
+        .credentials h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .credentials code {
+            background: #e9ecef;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #d63031;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .step {
+            margin-bottom: 30px;
+            padding: 25px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .step:hover {
+            border-color: #667eea;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+        }
+
+        /* noinspection CssUnusedSymbol */
+        .step.completed {
+            background: #d4edda;
+            border-color: #28a745;
+        }
+
+        .step-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background: #667eea;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-right: 15px;
+        }
+
+        .step.completed .step-number {
+            background: #28a745;
+        }
+
+        .step-number::after {
+            content: attr(data-step);
+        }
+
+        .step.completed .step-number::after {
+            content: "✓";
+        }
+
+        .step-title {
+            font-size: 1.5em;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .step-content {
+            margin-left: 55px;
+        }
+
+        .step-description {
+            color: #666;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .action-box {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #ffc107;
+            margin: 15px 0;
+        }
+
+        .action-box strong {
+            color: #856404;
+        }
+
+        .observe-box {
+            background: #d1ecf1;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #17a2b8;
+            margin: 15px 0;
+        }
+
+        .observe-box strong {
+            color: #0c5460;
+        }
+
+        .screenshot-reminder {
+            background: #f8d7da;
+            padding: 12px;
+            border-radius: 8px;
+            border-left: 4px solid #dc3545;
+            margin: 15px 0;
+            font-weight: 600;
+            color: #721c24;
+        }
+
+        .complete-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .complete-btn:hover {
+            background: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+        }
+
+        .progress-bar {
+            height: 30px;
+            background: #e9ecef;
+            border-radius: 15px;
+            margin: 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #28a745, #20c997);
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .api-endpoint {
+            background: #2d3436;
+            color: #00b894;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            margin: 10px 0;
+            overflow-x: auto;
+        }
+
+        .open-app-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: 600;
+            margin: 20px;
+            display: block;
+            width: calc(100% - 40px);
+            transition: all 0.3s ease;
+        }
+
+        .open-app-btn:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        ul {
+            margin: 10px 0 10px 20px;
+        }
+
+        li {
+            margin: 5px 0;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 E-Commerce App Onboarding</h1>
+            <p>Complete User Journey Guide</p>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressBar" style="width: 0">0% Complete</div>
+        </div>
+
+        <div class="credentials">
+            <h3>🔑 Test User Credentials</h3>
+            <p><strong>Email:</strong> <code>onboarduser@example.com</code></p>
+            <p><strong>First Name:</strong> <code>onboarduser</code></p>
+            <p><strong>Last Name:</strong> <code>onboarduser</code></p>
+            <p><strong>Password:</strong> <code>onboarduser</code></p>
+        </div>
+
+        <button class="open-app-btn" onclick="window.open('http://localhost:4200', '_blank')">
+            🚀 Open Application
+        </button>
+
+        <div class="content">
+            <!-- Step 1 -->
+            <div class="step" id="step1">
+                <div class="step-header">
+                    <div class="step-number" data-step="1"></div>
+                    <div class="step-title">Homepage & Product Catalog</div>
+                </div>
+                <div class="step-content">
+                    <p class="step-description">Open the application and observe the initial landing page with the product catalog.</p>
+
+                    <div class="action-box">
+                        <strong>Action:</strong> Navigate to http://localhost:4200 in your browser
+                    </div>
+
+                    <div class="observe-box">
+                        <strong>What to observe:</strong>
+                        <ul>
+                            <li>Navigation bar with app branding</li>
+                            <li>Login/Register options visible</li>
+                            <li>Product catalog displaying items</li>
+                            <li>Each product shows image, name, and price</li>
+                        </ul>
+                    </div>
+
+                    <div class="screenshot-reminder">
+                        📸 Screenshot: Save as <code>01-homepage.png</code>
+                    </div>
+
+                    <button class="complete-btn" onclick="completeStep(1)">✓ Step Complete</button>
+                </div>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="step" id="step2">
+                <div class="step-header">
+                    <div class="step-number" data-step="2"></div>
+                    <div class="step-title">User Registration</div>
+                </div>
+                <div class="step-content">
+                    <p class="step-description">Register a new user account using the test credentials.</p>
+
+                    <div class="action-box">
+                        <strong>Actions:</strong>
+                        <ol>
+                            <li>Click "Sign Up" or "Register" in the navigation</li>
+                            <li>Fill in the registration form with the test credentials above</li>
+                            <li>Submit the form</li>
+                        </ol>
+                    </div>
+
+                    <div class="api-endpoint">
+POST /api/auth/register
+{
+  "email": "onboarduser@example.com",
+  "firstName": "onboarduser",
+  "lastName": "onboarduser",
+  "password": "onboarduser"
+}
+                    </div>
+
+                    <div class="observe-box">
+                        <strong>What to observe:</strong>
+                        <ul>
+                            <li>Registration form appears with required fields</li>
+                            <li>Success message after submission</li>
+                            <li>Redirect to login page or auto-login</li>
+                        </ul>
+                    </div>
+
+                    <div class="screenshot-reminder">
+                        📸 Screenshot: Save as <code>02-registration.png</code>
+                    </div>
+
+                    <button class="complete-btn" onclick="completeStep(2)">✓ Step Complete</button>
+                </div>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="step" id="step3">
+                <div class="step-header">
+                    <div class="step-number" data-step="3"></div>
+                    <div class="step-title">User Login</div>
+                </div>
+                <div class="step-content">
+                    <p class="step-description">Authenticate with the newly created account.</p>
+
+                    <div class="action-box">
+                        <strong>Actions:</strong>
+                        <ol>
+                            <li>Navigate to login page (if not auto-logged in)</li>
+                            <li>Enter email and password</li>
+                            <li>Click "Login" or "Sign In"</li>
+                        </ol>
+                    </div>
+
+                    <div class="api-endpoint">
+POST /api/auth/login
+{
+  "email": "onboarduser@example.com",
+  "password": "onboarduser"
+}
+                    </div>
+
+                    <div class="observe-box">
+                        <strong>What to observe:</strong>
+                        <ul>
+                            <li>Login form with email and password fields</li>
+                            <li>Successful authentication</li>
+                            <li>JWT token stored (check DevTools > Application > Local Storage)</li>
+                            <li>Navigation shows logged-in state</li>
+                        </ul>
+                    </div>
+
+                    <div class="screenshot-reminder">
+                        📸 Screenshot: Save as <code>03-login-success.png</code>
+                    </div>
+
+                    <button class="complete-btn" onclick="completeStep(3)">✓ Step Complete</button>
+                </div>
+            </div>
+
+            <!-- Step 4 -->
+            <div class="step" id="step4">
+                <div class="step-header">
+                    <div class="step-number" data-step="4"></div>
+                    <div class="step-title">Browse Products</div>
+                </div>
+                <div class="step-content">
+                    <p class="step-description">View and browse the product catalog as an authenticated user.</p>
+
+                    <div class="action-box">
+                        <strong>Action:</strong> View the product catalog page
+                    </div>
+
+                    <div class="api-endpoint">
+GET /api/products
+                    </div>
+
+                    <div class="observe-box">
+                        <strong>What to observe:</strong>
+                        <ul>
+                            <li>Grid/list of products</li>
+                            <li>Product cards with images, names, prices</li>
+                            <li>Product categories if applicable</li>
+                            <li>Clickable product cards</li>
+                        </ul>
+                    </div>
+
+                    <div class="screenshot-reminder">
+                        📸 Screenshot: Save as <code>04-product-catalog.png</code>
+                    </div>
+
+                    <button class="complete-btn" onclick="completeStep(4)">✓ Step Complete</button>
+                </div>
+            </div>
+
+            <!-- Step 5 -->
+            <div class="step" id="step5">
+                <div class="step-header">
+                    <div class="step-number" data-step="5"></div>
+                    <div class="step-title">View Product Details</div>
+                </div>
+                <div class="step-content">
+                    <p class="step-description">Click on a product to view its detailed information.</p>
+
+                    <div class="action-box">
+                        <strong>Action:</strong> Click on any product card
+                    </div>
+
+                    <div class="api-endpoint">
+GET /api/products/{id}
+                    </div>
+
+                    <div class="observe-box">
+                        <strong>What to observe:</strong>
+                        <ul>
+                            <li>Product detail page</li>
+                            <li>Larger product image</li>
+                            <li>Complete description</li>
+                            <li>Price and availability</li>
+                            <li>"Add to Cart" button</li>
+                            <li>Product category/specifications</li>
+                        </ul>
+                    </div>
+
+                    <div class="screenshot-reminder">
+                        📸 Screenshot: Save as <code>05-product-detail.png</code>
+                    </div>
+
+                    <button class="complete-btn" onclick="completeStep(5)">✓ Step Complete</button>
+                </div>
+            </div>
+
+            <!-- Step 6 -->
+            <div class="step" id="step6">
+                <div class="step-header">
+                    <div class="step-number" data-step="6"></div>
+                    <div class="step-title">Add Product to Cart</div>
+                </div>
+                <div class="step-content">
+                    <p class="step-description">Add the selected product to your shopping cart.</p>
+
+                    <div class="action-box">
+                        <strong>Action:</strong> Click the "Add to Cart" button
+                    </div>
+
+                    <div class="observe-box">
+                        <strong>What to observe:</strong>
+                        <ul>
+                            <li>Success notification appears</li>
+                            <li>Cart icon badge updates (shows item count)</li>
+                            <li>Confirmation message</li>
+                        </ul>
+                    </div>
+
+                    <div class="screenshot-reminder">
+                        📸 Screenshot: Save as <code>06-add-to-cart.png</code>
+                    </div>
+
+                    <button class="complete-btn" onclick="completeStep(6)">✓ Step Complete</button>
+                </div>
+            </div>
+
+            <!-- Step 7 -->
+            <div class="step" id="step7">
+                <div class="step-header">
+                    <div class="step-number" data-step="7"></div>
+                    <div class="step-title">View Shopping Cart</div>
+                </div>
+                <div class="step-content">
+                    <p class="step-description">Navigate to the cart to review items before checkout.</p>
+
+                    <div class="action-box">
+                        <strong>Action:</strong> Click the cart icon in navigation
+                    </div>
+
+                    <div class="observe-box">
+                        <strong>What to observe:</strong>
+                        <ul>
+                            <li>Cart page displays</li>
+                            <li>Added product(s) listed</li>
+                            <li>Quantity controls (+/-)</li>
+                            <li>Individual and total prices</li>
+                            <li>"Checkout" or "Create Order" button</li>
+                        </ul>
+                    </div>
+
+                    <div class="screenshot-reminder">
+                        📸 Screenshot: Save as <code>07-cart-view.png</code>
+                    </div>
+
+                    <button class="complete-btn" onclick="completeStep(7)">✓ Step Complete</button>
+                </div>
+            </div>
+
+            <!-- Step 8 -->
+            <div class="step" id="step8">
+                <div class="step-header">
+                    <div class="step-number" data-step="8"></div>
+                    <div class="step-title">Create Order</div>
+                </div>
+                <div class="step-content">
+                    <p class="step-description">Complete the checkout process and create an order.</p>
+
+                    <div class="action-box">
+                        <strong>Actions:</strong>
+                        <ol>
+                            <li>Click "Checkout" or "Create Order"</li>
+                            <li>Fill in any required information</li>
+                            <li>Confirm the order</li>
+                        </ol>
+                    </div>
+
+                    <div class="api-endpoint">
+POST /api/orders
+{
+  "items": [{"productId": 1, "quantity": 1}]
+}
+                    </div>
+
+                    <div class="observe-box">
+                        <strong>What to observe:</strong>
+                        <ul>
+                            <li>Order confirmation page</li>
+                            <li>Order ID displayed</li>
+                            <li>Order summary with items</li>
+                            <li>Total amount</li>
+                            <li>Success message</li>
+                            <li>Cart cleared</li>
+                        </ul>
+                    </div>
+
+                    <div class="screenshot-reminder">
+                        📸 Screenshot: Save as <code>08-order-created.png</code>
+                    </div>
+
+                    <button class="complete-btn" onclick="completeStep(8)">✓ Step Complete</button>
+                </div>
+            </div>
+
+            <!-- Step 9 -->
+            <div class="step" id="step9">
+                <div class="step-header">
+                    <div class="step-number" data-step="9"></div>
+                    <div class="step-title">View Order History</div>
+                </div>
+                <div class="step-content">
+                    <p class="step-description">Navigate to the orders page to see your order history.</p>
+
+                    <div class="action-box">
+                        <strong>Action:</strong> Navigate to "Orders" or "My Orders" page
+                    </div>
+
+                    <div class="api-endpoint">
+GET /api/orders
+                    </div>
+
+                    <div class="observe-box">
+                        <strong>What to observe:</strong>
+                        <ul>
+                            <li>Orders list page</li>
+                            <li>All user orders displayed</li>
+                            <li>Order details: ID, date, amount, status</li>
+                            <li>Items in each order</li>
+                            <li>Newly created order appears</li>
+                        </ul>
+                    </div>
+
+                    <div class="screenshot-reminder">
+                        📸 Screenshot: Save as <code>09-orders-page.png</code>
+                    </div>
+
+                    <button class="complete-btn" onclick="completeStep(9)">✓ Step Complete</button>
+                </div>
+            </div>
+
+            <div class="credentials" style="background: #d4edda; border-color: #28a745;">
+                <h3>🎉 Congratulations!</h3>
+                <p id="completionMessage">Complete all 9 steps to finish the onboarding journey!</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let completedSteps = new Set();
+        const totalSteps = 9;
+
+        function completeStep(stepNumber) {
+            completedSteps.add(stepNumber);
+            document.getElementById(`step${stepNumber}`).classList.add('completed');
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const percentage = Math.round((completedSteps.size / totalSteps) * 100);
+            const progressBar = document.getElementById('progressBar');
+            progressBar.style.width = percentage + '%';
+            progressBar.textContent = percentage + '% Complete';
+
+            if (completedSteps.size === totalSteps) {
+                document.getElementById('completionMessage').innerHTML =
+                    '<strong>🎉 Onboarding Complete!</strong><br>' +
+                    'You have successfully completed the entire user journey.<br>' +
+                    'All screenshots should be saved in: <code>onboarding-screenshots-20260619-122319/</code>';
+            }
+        }
+    </script>
+</body>
+</html>
