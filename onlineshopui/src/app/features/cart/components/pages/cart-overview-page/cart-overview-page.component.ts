@@ -24,11 +24,9 @@ import {
 } from '../../../utils/cart.utils';
 import { createAddressForm } from '../../../utils/address-form.utils';
 
-import { CardComponent } from '../../../../../clib/components/card/card.component';
-
 @Component({
     selector: 'app-cart-overview-page',
-    imports: [SpinnerComponent, CartItemRowComponent, CartSummaryComponent, AddressFormComponent, CardComponent, RouterLink],
+    imports: [SpinnerComponent, CartItemRowComponent, CartSummaryComponent, AddressFormComponent, RouterLink],
     templateUrl: './cart-overview-page.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -51,6 +49,7 @@ export class CartOverviewPageComponent implements OnInit {
     ];
 
     readonly addressForm = createAddressForm();
+    readonly isAddressModalOpen = signal(false);
 
     readonly productsById = computed(() => buildProductsById(this.products()));
 
@@ -78,13 +77,12 @@ export class CartOverviewPageComponent implements OnInit {
 
     onCheckout(): void {
         if (this.cartItems().length === 0) return;
+        this.isAddressModalOpen.set(true);
+    }
 
+    onConfirmOrder(): void {
         this.addressForm.markAllAsTouched();
         if (this.addressForm.invalid) {
-            this.notificationsService.notifyError({
-                title: 'Invalid address',
-                message: 'Please provide a complete delivery address.'
-            });
             return;
         }
 
@@ -99,6 +97,7 @@ export class CartOverviewPageComponent implements OnInit {
             .subscribe({
                 next: () => {
                     this.isSubmitting.set(false);
+                    this.isAddressModalOpen.set(false);
                     this.cartService.clear();
                     this.addressForm.reset();
                     this.notificationsService.notifySuccess({
@@ -120,6 +119,11 @@ export class CartOverviewPageComponent implements OnInit {
                     this.isSubmitting.set(false);
                 }
             });
+    }
+
+    onCancelOrder(): void {
+        this.isAddressModalOpen.set(false);
+        this.addressForm.reset();
     }
 
     retry(): void {

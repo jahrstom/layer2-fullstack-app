@@ -1,5 +1,8 @@
+// noinspection JSUnresolvedLibraryURL
 const puppeteer = require('puppeteer');
+// noinspection JSUnresolvedLibraryURL
 const fs = require('fs');
+// noinspection JSUnresolvedLibraryURL
 const path = require('path');
 
 const SCREENSHOT_DIR = path.join(__dirname, `onboarding-screenshots-${new Date().toISOString().replace(/[:.]/g, '-').slice(0, -5)}`);
@@ -58,7 +61,7 @@ async function main() {
         registered = true;
         break;
       } catch (e) {
-        continue;
+        // Try next selector
       }
     }
 
@@ -108,7 +111,7 @@ async function main() {
         await page.click(selector);
         break;
       } catch (e) {
-        continue;
+        // Try next selector
       }
     }
     await sleep(2000);
@@ -123,7 +126,7 @@ async function main() {
         await page.click(selector);
         break;
       } catch (e) {
-        continue;
+        // Try next selector
       }
     }
     await sleep(2000);
@@ -138,7 +141,7 @@ async function main() {
         await page.click(selector);
         break;
       } catch (e) {
-        continue;
+        // Try next selector
       }
     }
     await sleep(2000);
@@ -153,7 +156,7 @@ async function main() {
         await page.click(selector);
         break;
       } catch (e) {
-        continue;
+        // Try next selector
       }
     }
     await sleep(3000);
@@ -168,7 +171,7 @@ async function main() {
         await page.click(selector);
         break;
       } catch (e) {
-        continue;
+        // Try next selector
       }
     }
     await sleep(2000);
